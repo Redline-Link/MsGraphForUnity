@@ -15,6 +15,8 @@ namespace MicrosoftGraphForUnity
     /// </summary>
     public class AuthenticationService
     {
+        public static AuthenticationService Instance;
+        
         /// <summary>
         /// Indicates when the authentication state has changed.
         /// </summary>
@@ -93,6 +95,8 @@ namespace MicrosoftGraphForUnity
 #endif
 
             GraphClient = GetAuthenticatedClient();
+
+            Instance = this;
         }
         
         /// <summary>
@@ -131,16 +135,18 @@ namespace MicrosoftGraphForUnity
         {
             try
             {
-                OnAuthenticationChanged?.Invoke(this, AuthenticationState.StartedInteractive);
-                var authResult = await identityClientApp.AcquireTokenInteractive(grantScopes).ExecuteAsync();
-                // Set access token and expiration
-                TokenForUser = authResult.AccessToken;
-                Expiration = authResult.ExpiresOn;
-
-                OnAuthenticationChanged?.Invoke(this, AuthenticationState.Completed);
-            }
-            catch (Exception e) when (e is PlatformNotSupportedException || e is MsalUiRequiredException)
-            {
+                // temporary disable interactive login because it's broken
+                // you can only use device code login in most cases anyways
+            //     OnAuthenticationChanged?.Invoke(this, AuthenticationState.StartedInteractive);
+            //     var authResult = await identityClientApp.AcquireTokenInteractive(grantScopes).ExecuteAsync();
+            //     // Set access token and expiration
+            //     TokenForUser = authResult.AccessToken;
+            //     Expiration = authResult.ExpiresOn;
+            //
+            //     OnAuthenticationChanged?.Invoke(this, AuthenticationState.Completed);
+            // }
+            // catch (Exception e) when (e is PlatformNotSupportedException || e is MsalUiRequiredException)
+            // {
 
                 var authResult = await identityClientApp.AcquireTokenWithDeviceCode(grantScopes, dcr =>
                 {
@@ -199,10 +205,18 @@ namespace MicrosoftGraphForUnity
         
         public class TokenProvider : IAccessTokenProvider
         {
+            public string token { get; set; }
             public Task<string> GetAuthorizationTokenAsync(Uri uri, Dictionary<string, object> additionalAuthenticationContext = default,
                 CancellationToken cancellationToken = default)
             {
-                var token = "token";
+                if (string.IsNullOrEmpty(token))
+                {
+                    var t = Instance.AcquireTokenForUserAsync();
+                }
+
+                token = Instance.TokenForUser;
+                
+                // var token = "token";
                 // get the token and return it in your own way
                 return Task.FromResult(token);
                 

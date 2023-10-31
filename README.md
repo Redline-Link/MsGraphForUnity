@@ -1,6 +1,10 @@
-# Microsoft Graph for Unity
-This package brings Microsoft Graph with MSAL (authentication) to Unity (2019.4 LTS).  
+# Microsoft Graph (v5.x) for Unity
+This example brings Microsoft Graph with MSAL (authentication) to Unity (2021.3 LTS).  
 You can access all MS Graph APIs like OneDrive, SharePoint for Business, Microsoft Teams and more.
+
+Due to it's POC (proof of concept) about new MS Graph v5 can still work with Unity, so no Unity Package.  
+If you want to use it in your project, beside copying all necessary files, you also need [NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity)  .
+And install all NuGet packages that appear in this project.
 
 ## Setup
 
@@ -31,16 +35,13 @@ This package includes an example scene that deals with all relevant aspects and 
 In this example the user can query for files of this personal OneDrive file and presents a list of found items with a thumbnail.
 
 ## Supported platforms
-Generally it should work on all platforms, at least with device code flow as a fallback.  
+~~Generally it should work on all platforms, at least with device code flow as a fallback.~~  
+Due to MS Graph v5 upgrade, interactive mode can not run without error, so all use device code.  
 Verified working platforms:
 
 | OS  | Authentication Flow |
 | ------------- |-------------|
-| Android  | Device Code |
-| Android/Oculus Quest  | Device Code |
-| iOS  | Device Code |
-| UWP/HoloLens  | Interactive |
-| Win32/Editor  | Device Code |
+| Editor  | Device Code |
 
 ## Authentication
 Authentication is handled for you by this library, just just need to provide some basic UI to handle device code flow, the example scene illustrates how to use it.
