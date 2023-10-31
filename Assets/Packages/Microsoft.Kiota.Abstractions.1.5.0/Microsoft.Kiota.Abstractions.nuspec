@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.Kiota.Abstractions</id>
+    <version>1.5.0</version>
+    <authors>Microsoft</authors>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="file">LICENSE</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <readme>README.md</readme>
+    <projectUrl>https://aka.ms/kiota/docs</projectUrl>
+    <iconUrl>http://go.microsoft.com/fwlink/?LinkID=288890</iconUrl>
+    <description>Abstractions library for the Kiota generated SDKs in dotnet.</description>
+    <releaseNotes>https://github.com/microsoft/kiota-abstractions-dotnet/releases</releaseNotes>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <repository type="git" url="https://github.com/microsoft/kiota-abstractions-dotnet" commit="75143baa452fc42e63f3942f605cf754d7361fb7" />
+    <dependencies>
+      <group targetFramework="net5.0">
+        <dependency id="Std.UriTemplate" version="0.0.46" exclude="Build,Analyzers" />
+        <dependency id="System.Diagnostics.DiagnosticSource" version="[6.0.0, 8.0.0)" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Std.UriTemplate" version="0.0.46" exclude="Build,Analyzers" />
+        <dependency id="System.Diagnostics.DiagnosticSource" version="[6.0.0, 8.0.0)" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.1">
+        <dependency id="Std.UriTemplate" version="0.0.46" exclude="Build,Analyzers" />
+        <dependency id="System.Diagnostics.DiagnosticSource" version="[6.0.0, 8.0.0)" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

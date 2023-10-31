@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Graph;
 using Microsoft.Identity.Client;
+using Microsoft.Kiota.Abstractions.Authentication;
 
 namespace MicrosoftGraphForUnity
 {
@@ -181,15 +184,34 @@ namespace MicrosoftGraphForUnity
         private GraphServiceClient GetAuthenticatedClient()
         {
             // Create Microsoft Graph client.
-            return new GraphServiceClient(
-                "https://graph.microsoft.com/v1.0",
-                new DelegateAuthenticationProvider(
-                    async (requestMessage) =>
-                    {
-                        await AcquireTokenForUserAsync();
-                        // Set bearer authentication on header
-                        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", TokenForUser);
-                    }));
+            var authenticationProvider = new BaseBearerTokenAuthenticationProvider(new TokenProvider());
+            return new GraphServiceClient(authenticationProvider);
+            // return new GraphServiceClient(
+            //     "https://graph.microsoft.com/v1.0",
+            //     new DelegateAuthenticationProvider(
+            //         async (requestMessage) =>
+            //         {
+            //             await AcquireTokenForUserAsync();
+            //             // Set bearer authentication on header
+            //             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", TokenForUser);
+            //         }));
+        }
+        
+        public class TokenProvider : IAccessTokenProvider
+        {
+            public Task<string> GetAuthorizationTokenAsync(Uri uri, Dictionary<string, object> additionalAuthenticationContext = default,
+                CancellationToken cancellationToken = default)
+            {
+                var token = "token";
+                // get the token and return it in your own way
+                return Task.FromResult(token);
+                
+                // // await AcquireTokenForUserAsync();
+                // // Set bearer authentication on header
+                // requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", TokenForUser);
+            }
+
+            public AllowedHostsValidator AllowedHostsValidator { get; }
         }
 
         /// <summary>

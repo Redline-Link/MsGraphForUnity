@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Std.UriTemplate</id>
+    <version>0.0.46</version>
+    <authors>Std.UriTemplate</authors>
+    <license type="file">LICENSE</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <readme>Readme.md</readme>
+    <description>Std.Uritemplate for .NET - Implementation of RFC 6570 (Level 4)</description>
+    <tags>RFC6570 UriTemplate Std.UriTemplate</tags>
+    <repository type="git" url="https://github.com/std-uritemplate/std-uritemplate" commit="9509f6cf6378f6301bbde55c4004b2476072d3f4" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+  </metadata>
+</package>

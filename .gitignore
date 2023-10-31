@@ -9,6 +9,10 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Mm]emoryCaptures/
+/[Mm]emoryCaptures/
+/[Uu]ser[Ss]ettings/
+*/_[Ll]ocal
+*/_[Ll]ocal.meta
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
@@ -59,3 +63,8 @@ sysinfo.txt
 crashlytics-build.properties
 
 .idea/
+
+# ignore system folder viewer temp file
+.DS_Store
+Thumbs.db
+Desktop.ini
