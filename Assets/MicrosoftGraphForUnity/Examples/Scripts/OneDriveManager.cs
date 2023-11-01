@@ -21,6 +21,12 @@ namespace MicrosoftGraphForUnity.Examples
         private UIDriveItemElement driveItemPrefab;
         [SerializeField]
         private Sprite placeHolderThumbnail;
+        [SerializeField]
+        private Sprite fileThumbnail;
+        [SerializeField]
+        private Sprite folderThumbnail;
+        [SerializeField]
+        private Sprite imageThumbnail;
 
         [Header("UI")]
         [SerializeField]
@@ -61,6 +67,7 @@ namespace MicrosoftGraphForUnity.Examples
 
             isSearching = true;
             searchButtonText.text = "Cancel";
+            
             var myDriveData = await graphManager.Client.Me.Drive.GetAsync();
             if (myDriveData == null)
             {
@@ -110,12 +117,19 @@ namespace MicrosoftGraphForUnity.Examples
                 // }
                 //
                 // // v5 can not get drive item directly
-                await using var data = await graphManager.Client.Drives[myDriveId].Items[driveItem.Id].Content.GetAsync();
-                counter++;
-                Debug.Log("Downloaded data " + counter);
+                // await using var data = await graphManager.Client.Drives[myDriveId].Items[driveItem.Id].Content.GetAsync();
+                // counter++;
+                // Debug.Log("Downloaded data " + counter);
 
-                var sprite = await DownloadDriveItemThumbnail(graphManager.Client.Drives[myDriveId], driveItem.Id);
+                // disable image preview
+                //var sprite = await DownloadDriveItemThumbnail(graphManager.Client.Drives[myDriveId], driveItem.Id);
                 // item.image.sprite = sprite != null ? sprite : placeHolderThumbnail;
+                if (driveItem.Folder != null || driveItem.SpecialFolder != null)
+                    item.image.sprite = folderThumbnail;
+                else if (driveItem.Image != null)
+                    item.image.sprite = imageThumbnail;
+                else
+                    item.image.sprite = fileThumbnail;
                 
                 foundItems.Add(item);
             }
@@ -137,7 +151,7 @@ namespace MicrosoftGraphForUnity.Examples
             // v2
             // var search = await drive.Search(query).Request().GetAsync();
             // v5
-            var search = await drive.SearchWithQ($"q='{query}'").GetAsSearchWithQGetResponseAsync();
+            var search = await drive.SearchWithQ(query).GetAsSearchWithQGetResponseAsync();
             return search?.Value?.ToList();
         }
 
@@ -149,44 +163,49 @@ namespace MicrosoftGraphForUnity.Examples
         /// <returns>Thumbnail as Sprite or null if the item has no thumbnail.</returns>
         private async Task<Sprite> DownloadDriveItemThumbnail(Microsoft.Graph.Drives.Item.DriveItemRequestBuilder drive, string itemId)
         {
-            var thumbnails = await drive.Items[itemId].Thumbnails.GetAsync();
-            if (thumbnails == null)
-            {
-                return null;
-            }
-            if (thumbnails?.Value?.First() == null)
-            {
-                return null;
-            }
+            // TODO too many random exception here, need research
+            // no thumbnail for you!
+            await Task.Delay(10);
+            return null;
             
-            ThumbnailSet thumbnail = thumbnails.Value?.First();
-            if (thumbnail == null)
-            {
-                return null;
-            }
-
-            // var content = await drive.Items[itemId].Thumbnails[thumbnail.Id]["medium"].Content.Request().GetAsync();
-            var contentReq = await drive.Items[itemId].Thumbnails[thumbnail.Id].GetAsync();
-            if (contentReq == null)
-                return null;
-            
-            var content = contentReq.Medium;
-            if (content == null || content.Content == null)
-                return null;
-
-            MemoryStream ms = new MemoryStream(content.Content);
-            
-            using (var reader = new MemoryStream())
-            {
-                await ms.CopyToAsync(reader);
-                var data  = reader.ToArray();
-                var texture = new Texture2D(0, 0);
-                texture.LoadImage(data);
-                return Sprite.Create(
-                    texture, 
-                    new Rect(0, 0, texture.width, texture.height), 
-                    new Vector2(0.5f, 0.5f));
-            }
+            // var thumbnails = await drive.Items[itemId].Thumbnails.GetAsync();
+            // if (thumbnails == null)
+            // {
+            //     return null;
+            // }
+            // if (thumbnails?.Value?.First() == null)
+            // {
+            //     return null;
+            // }
+            //
+            // ThumbnailSet thumbnail = thumbnails.Value?.First();
+            // if (thumbnail == null)
+            // {
+            //     return null;
+            // }
+            //
+            // // var content = await drive.Items[itemId].Thumbnails[thumbnail.Id]["medium"].Content.Request().GetAsync();
+            // var contentReq = await drive.Items[itemId].Thumbnails[thumbnail.Id].GetAsync();
+            // if (contentReq == null)
+            //     return null;
+            //
+            // var content = contentReq.Medium;
+            // if (content == null || content.Content == null)
+            //     return null;
+            //
+            // MemoryStream ms = new MemoryStream(content.Content);
+            //
+            // using (var reader = new MemoryStream())
+            // {
+            //     await ms.CopyToAsync(reader);
+            //     var data  = reader.ToArray();
+            //     var texture = new Texture2D(0, 0);
+            //     texture.LoadImage(data);
+            //     return Sprite.Create(
+            //         texture, 
+            //         new Rect(0, 0, texture.width, texture.height), 
+            //         new Vector2(0.5f, 0.5f));
+            // }
         }
     }
 }
