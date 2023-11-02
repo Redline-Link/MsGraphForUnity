@@ -72,6 +72,9 @@ namespace MicrosoftGraphForUnity.Examples
             if (myDriveData == null)
             {
                 Debug.LogError("can not get your drive, stopping");
+                isSearching = false;
+                cancelSearch = false;
+                searchButtonText.text = "Search";
                 return;
             }
             string myDriveId = myDriveData.Id;
@@ -126,8 +129,8 @@ namespace MicrosoftGraphForUnity.Examples
                 // item.image.sprite = sprite != null ? sprite : placeHolderThumbnail;
                 if (driveItem.Folder != null || driveItem.SpecialFolder != null)
                     item.image.sprite = folderThumbnail;
-                else if (driveItem.Image != null)
-                    item.image.sprite = imageThumbnail;
+                else if (driveItem.Image != null || $"{driveItem?.File?.MimeType}".Contains("image/"))
+                    item.image.sprite = imageThumbnail; // in v5, Image obj might be null even it's actually an image file
                 else
                     item.image.sprite = fileThumbnail;
                 
