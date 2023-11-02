@@ -111,6 +111,7 @@ namespace MicrosoftGraphForUnity.Examples
                 var item = Instantiate(driveItemPrefab, contentRoot);
                 item.transform.SetAsLastSibling();
                 item.text.text = driveItem.Name;
+                item.sizeText.text = (driveItem.Size != null && driveItem.Folder == null && driveItem.SpecialFolder == null) ? $"{driveItem.Size} byte(s)" : "";
                 Debug.Log("Downloading " + driveItem.Name);
                 // v2 way to get the file
                 // using (var data = await graphManager.Client.Me.Drive.Items[driveItem.Id].Content.Request().GetAsync())

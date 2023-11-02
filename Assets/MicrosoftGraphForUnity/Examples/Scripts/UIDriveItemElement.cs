@@ -7,5 +7,6 @@ namespace MicrosoftGraphForUnity.Examples
     {
         public Image image;
         public Text text;
+        public Text sizeText;
     }
 }
