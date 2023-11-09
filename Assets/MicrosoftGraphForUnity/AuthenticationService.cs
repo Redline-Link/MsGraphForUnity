@@ -71,7 +71,7 @@ namespace MicrosoftGraphForUnity
         /// <param name="scopes">Define scopes that this application can access on MS Graph.</param>
         /// <param name="tokenCacheDirectory">The directory path where to save the token in case System.Security.Cryptography is not supported.</param>
         /// <exception cref="ArgumentException">You must specify a clientId.</exception>
-        public AuthenticationService(string clientId, string redirectUri, string[] scopes, string tokenCacheDirectory)
+        public AuthenticationService(string clientId, string redirectUri, string authority, string[] scopes, string tokenCacheDirectory)
         {
             if (string.IsNullOrWhiteSpace(clientId))
             {
@@ -82,6 +82,10 @@ namespace MicrosoftGraphForUnity
             grantScopes = scopes;
 
             var clientBuilder = PublicClientApplicationBuilder.Create(clientId);
+            if (!string.IsNullOrWhiteSpace(authority))
+            {
+                clientBuilder.WithAuthority(authority);
+            }
             if (!string.IsNullOrWhiteSpace(redirectUri))
             {
                 clientBuilder.WithRedirectUri(redirectUri);
@@ -153,7 +157,7 @@ namespace MicrosoftGraphForUnity
                     OnAuthenticationChanged?.Invoke(this, AuthenticationState.FallbackToDeviceCode);
                     OnPresentDeviceCode?.Invoke(this, dcr);
                     return Task.FromResult(0);
-                }).ExecuteAsync();
+                }).ExecuteAsync().ConfigureAwait(false);
 
                 // Set access token and expiration
                 TokenForUser = authResult.AccessToken;

@@ -26,6 +26,8 @@ namespace MicrosoftGraphForUnity
         [SerializeField]
         private string redirectUrl;
         [SerializeField]
+        private string authority;
+        [SerializeField]
         private string[] scopes = new[] { "User.Read", "Files.ReadWrite" };
 
         [Header("Authentication Callbacks")]
@@ -49,7 +51,7 @@ namespace MicrosoftGraphForUnity
             
             Debug.Log(Application.persistentDataPath + "/token/");
             
-            AuthenticationService = new AuthenticationService(appId, redirectUrl, scopes, Application.persistentDataPath + "/token/");
+            AuthenticationService = new AuthenticationService(appId, redirectUrl, authority, scopes, Application.persistentDataPath + "/token/");
             AuthenticationService.OnAuthenticationChanged += (sender, state) =>
             {
                 switch (state)
